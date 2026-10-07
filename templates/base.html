@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Court District{% endblock %}</title>
+    <style>
+        :root {
+            --navy: #0f172a;
+            --navy-soft: #1e293b;
+            --gold: #f59e0b;
+            --gold-soft: #fbbf24;
+            --cream: #f8fafc;
+            --text: #111827;
+            --muted: #475569;
+            --danger: #dc2626;
+            --success: #15803d;
+            --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--cream);
+            color: var(--text);
+        }
+        a { color: inherit; text-decoration: none; }
+        img { max-width: 100%; display: block; }
+        .container {
+            width: min(1100px, calc(100% - 2rem));
+            margin: 0 auto;
+        }
+        .topbar {
+            background: var(--navy);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            gap: 1rem;
+        }
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+        }
+        .nav-links a, .nav-links button {
+            color: white;
+            background: transparent;
+            border: 0;
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .nav-links .cta {
+            background: var(--gold);
+            color: var(--navy);
+            border-radius: 999px;
+            font-weight: 700;
+        }
+        .hero {
+            background: linear-gradient(135deg, #0f172a, #1e293b 60%, #f59e0b);
+            color: white;
+            padding: 4rem 0;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-size: 0.8rem;
+            color: var(--gold-soft);
+            font-weight: 700;
+        }
+        h1, h2, h3, p { margin-top: 0; }
+        h1 {
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            line-height: 1.05;
+            margin-bottom: 1rem;
+        }
+        .lead {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .btn {
+            border: none;
+            border-radius: 999px;
+            padding: 0.9rem 1.4rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: var(--gold);
+            color: var(--navy);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+        .panel {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        }
+        .hero-card {
+            padding: 1rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 18px;
+        }
+        .hero-card img {
+            border-radius: 16px;
+            height: 420px;
+            width: 100%;
+            object-fit: cover;
+        }
+        .section {
+            padding: 3rem 0;
+        }
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        .product-grid {
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        }
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+        }
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        .card-body {
+            padding: 1rem;
+        }
+        .meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+        .price {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 1.2rem;
+        }
+        .flash {
+            width: min(1100px, calc(100% - 2rem));
+            margin: 1rem auto 0;
+            padding: 0.9rem 1rem;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            font-weight: 600;
+        }
+        .flash.success { background: rgba(21, 128, 61, 0.1); border-color: rgba(21, 128, 61, 0.2); color: var(--success); }
+        .flash.error { background: rgba(220, 38, 38, 0.08); border-color: rgba(220, 38, 38, 0.2); color: var(--danger); }
+        .form-shell {
+            max-width: 720px;
+            margin: 2.5rem auto;
+            padding: 2rem;
+        }
+        form {
+            display: grid;
+            gap: 1rem;
+        }
+        .field {
+            display: grid;
+            gap: 0.45rem;
+        }
+        .field input, .field textarea, .field select {
+            width: 100%;
+            padding: 0.8rem 0.9rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font: inherit;
+            background: white;
+        }
+        .field textarea { min-height: 120px; resize: vertical; }
+        .inline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .admin-table th, .admin-table td {
+            padding: 0.9rem 0.8rem;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+        }
+        .row-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+        .secondary-btn {
+            background: #e2e8f0;
+            color: var(--navy);
+            border-radius: 999px;
+            padding: 0.6rem 0.9rem;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .danger-btn {
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 999px;
+            padding: 0.6rem 0.9rem;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .muted { color: var(--muted); }
+        .nav-counter {
+            display: inline-grid;
+            place-items: center;
+            min-width: 1.25rem;
+            height: 1.25rem;
+            margin-left: 0.25rem;
+            padding: 0 0.25rem;
+            border-radius: 999px;
+            background: var(--gold);
+            color: var(--navy);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .content-grid { grid-template-columns: 1.2fr 0.8fr; align-items: start; }
+        @media (max-width: 768px) {
+            .content-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero-grid { grid-template-columns: 1fr; }
+            .nav { align-items: flex-start; flex-direction: column; }
+            .nav-links { width: 100%; justify-content: flex-start; }
+            .button-row { flex-direction: column; }
+            .btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="container nav">
+            <a class="brand" href="{{ url_for('home') }}">Court District</a>
+            <nav class="nav-links">
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('catalog') }}">Shop</a>
+                {% if current_user and current_user.role == 'admin' %}
+                    <a href="{{ url_for('admin_shoes') }}">Inventory</a>
+                {% endif %}
+                {% if current_user %}
+                    <a href="{{ url_for('wishlist') }}">Wishlist<span class="nav-counter">{{ wishlist_count }}</span></a>
+                    <a href="{{ url_for('cart') }}">Cart<span class="nav-counter">{{ cart_count }}</span></a>
+                    <a href="{{ url_for('account') }}">Account</a>
+                    <form method="post" action="{{ url_for('logout') }}" style="display:inline;">
+                        <button class="cta" type="submit">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a class="cta" href="{{ url_for('register') }}">Register</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>

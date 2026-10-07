@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ shoe.name }} | Court District{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="grid content-grid">
+            <div class="card">
+                <img src="{{ shoe.image_url or 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80' }}" alt="{{ shoe.name }}">
+            </div>
+            <div class="panel" style="padding: 1.5rem;">
+                <div class="meta">
+                    <span>{{ shoe.brand }}</span>
+                    <span>{{ shoe.category }}</span>
+                </div>
+                <h2>{{ shoe.name }}</h2>
+                <p class="price">${{ '%.2f' | format(shoe.price_cents / 100) }}</p>
+                <p class="muted">{{ shoe.description }}</p>
+                <div class="meta">
+                    <span>Size range: {{ shoe.size_range }}</span>
+                    <span>{{ 'Available' if shoe.stock > 0 else 'Sold out' }}</span>
+                </div>
+
+                <form method="post" action="{{ url_for('add_to_cart', shoe_id=shoe.id) }}" style="margin-top:1.2rem;">
+                    <div class="field">
+                        <label for="size">Choose size</label>
+                        <select id="size" name="size" required>
+                            <option value="">Select size</option>
+                            {% set sizes = shoe.size_range.replace('US ', '').split('-') %}
+                            {% if sizes|length == 2 %}
+                                {% for i in range(sizes[0]|int, sizes[1]|int + 1) %}
+                                    <option value="US {{ i }}">US {{ i }}</option>
+                                {% endfor %}
+                            {% else %}
+                                <option value="{{ shoe.size_range }}">{{ shoe.size_range }}</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="quantity">Quantity</label>
+                        <input id="quantity" name="quantity" type="number" min="1" max="{{ shoe.stock }}" value="1" required>
+                    </div>
+                    <button class="btn btn-primary" type="submit" {% if shoe.stock < 1 %}disabled{% endif %}>Add to cart</button>
+                </form>
+                <form method="post" action="{{ url_for('add_to_wishlist', shoe_id=shoe.id) }}" style="margin-top:0.75rem;">
+                    <button class="secondary-btn" type="submit">Save to wishlist</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

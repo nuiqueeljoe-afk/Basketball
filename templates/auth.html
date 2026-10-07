@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if mode == 'login' %}Login{% else %}Register{% endif %} | Court District{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="panel form-shell">
+        <h2>{% if mode == 'login' %}Welcome back{% else %}Create your account{% endif %}</h2>
+        <form method="post">
+            {% if mode == 'register' %}
+                <div class="field">
+                    <label for="name">Full name</label>
+                    <input id="name" name="name" type="text" required>
+                </div>
+            {% endif %}
+            <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" minlength="8" required>
+            </div>
+            <button class="btn btn-primary" type="submit">{% if mode == 'login' %}Login{% else %}Register{% endif %}</button>
+            {% if mode == 'login' %}
+                <p class="muted">Need an account? <a href="{{ url_for('register') }}">Register here</a>.</p>
+            {% else %}
+                <p class="muted">Already have an account? <a href="{{ url_for('login') }}">Login here</a>.</p>
+            {% endif %}
+        </form>
+    </div>
+</section>
+{% endblock %}

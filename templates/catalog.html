@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Court District | Shop{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2>Shop the Court District collection</h2>
+        <form method="get" action="{{ url_for('catalog') }}" style="margin: 1.2rem 0 2rem;">
+            <div class="field">
+                <label for="q">Search shoes</label>
+                <input id="q" name="q" value="{{ query }}" placeholder="Search by brand, model, or category">
+            </div>
+        </form>
+
+        {% if shoes %}
+            <div class="grid product-grid">
+                {% for shoe in shoes %}
+                    <a href="{{ url_for('shoe_detail', shoe_id=shoe.id) }}" class="card" style="display:block;">
+                        <img src="{{ shoe.image_url or 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80' }}" alt="{{ shoe.name }}">
+                        <div class="card-body">
+                            <div class="meta">
+                                <span>{{ shoe.brand }}</span>
+                                <span>{{ shoe.category }}</span>
+                            </div>
+                            <h3>{{ shoe.name }}</h3>
+                            <div class="meta">
+                                <span>{{ shoe.size_range }}</span>
+                                <span class="price">${{ '%.2f' | format(shoe.price_cents / 100) }}</span>
+                            </div>
+                            <p class="muted">{{ shoe.description }}</p>
+                            <div class="meta">
+                                <span>Stock: {{ shoe.stock }}</span>
+                                <span>{{ 'Available' if shoe.stock > 0 else 'Sold out' }}</span>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="panel" style="padding: 2rem;">
+                <p>No shoes match that search yet. Try another model or category.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

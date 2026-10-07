@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout | Court District{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container content-grid grid">
+        <div class="panel" style="padding:1.5rem;">
+            <h2>Checkout</h2>
+            <form method="post">
+                <div class="field">
+                    <label for="shipping_name">Full name</label>
+                    <input id="shipping_name" name="shipping_name" type="text" value="{{ user.name }}" maxlength="100" required>
+                </div>
+                <div class="field">
+                    <label for="shipping_phone">Phone number</label>
+                    <input id="shipping_phone" name="shipping_phone" type="tel" maxlength="30" required>
+                </div>
+                <div class="field">
+                    <label for="shipping_address">Delivery address</label>
+                    <textarea id="shipping_address" name="shipping_address" maxlength="500" required></textarea>
+                </div>
+                <div class="field">
+                    <label for="payment_method">Payment method</label>
+                    <select id="payment_method" name="payment_method" required>
+                        <option value="cash_on_delivery">Cash on delivery</option>
+                        <option value="pickup">Pay at store pickup</option>
+                    </select>
+                </div>
+                <p class="muted">This demo records your order; payment is collected on delivery or store pickup.</p>
+                <button class="btn btn-primary" type="submit">Place order</button>
+            </form>
+        </div>
+        <aside class="panel" style="padding:1.5rem;">
+            <h2>Order summary</h2>
+            {% for item in items %}
+                <div class="meta">
+                    <span>{{ item.name }} · {{ item.size }} × {{ item.quantity }}</span>
+                    <strong>${{ '%.2f' | format(item.price_cents * item.quantity / 100) }}</strong>
+                </div>
+            {% endfor %}
+            <hr>
+            <p class="price">Total: ${{ '%.2f' | format(total_cents / 100) }}</p>
+            <a href="{{ url_for('cart') }}">Back to cart</a>
+        </aside>
+    </div>
+</section>
+{% endblock %}

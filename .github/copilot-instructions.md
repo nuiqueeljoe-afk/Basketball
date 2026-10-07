@@ -1,0 +1,9 @@
+- [x] Verify that the copilot-instructions.md file in the .github directory is created.
+- [x] Clarify project requirements.
+- [x] Scaffold the project.
+- [x] Customize the project to the Court District storefront and inventory system.
+- [x] Install the required dependencies.
+- [x] Compile the project and resolve runtime issues.
+- [x] Create and run a project task as needed.
+- [x] Launch the app locally for verification.
+- [x] Ensure documentation is complete and current.

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Court District | Premium Basketball Footwear{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container hero-grid">
+        <div>
+            <div class="eyebrow">Built for the next stop</div>
+            <h1>Fresh hoops gear for players who move first.</h1>
+            <p class="lead">Court District supplies elite basketball shoes for training, game day, and everyday hustle — from explosive guards to floor-spacing wings.</p>
+            <div class="button-row">
+                <a class="btn btn-primary" href="{{ url_for('catalog') }}">Shop the collection</a>
+                <a class="btn btn-secondary" href="{{ url_for('register') }}">Create an account</a>
+            </div>
+        </div>
+        <div class="hero-card panel">
+            <img src="https://images.unsplash.com/photo-1543508282-6319a3e2621f?auto=format&fit=crop&w=1200&q=80" alt="Basketball shoes on a court">
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2>Featured basketball shoes</h2>
+        <div class="grid product-grid">
+            {% for shoe in shoes %}
+                <a href="{{ url_for('shoe_detail', shoe_id=shoe.id) }}" class="card" style="display:block;">
+                    <img src="{{ shoe.image_url or 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80' }}" alt="{{ shoe.name }}">
+                    <div class="card-body">
+                        <div class="meta">
+                            <span>{{ shoe.brand }}</span>
+                            <span>{{ shoe.category }}</span>
+                        </div>
+                        <h3>{{ shoe.name }}</h3>
+                        <div class="meta">
+                            <span>{{ shoe.size_range }}</span>
+                            <span class="price">${{ '%.2f' | format(shoe.price_cents / 100) }}</span>
+                        </div>
+                        <p class="muted">{{ shoe.description[:100] }}{% if shoe.description|length > 100 %}...{% endif %}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

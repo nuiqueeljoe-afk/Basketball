@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Wishlist | Court District{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2>Your wishlist</h2>
+        {% if shoes %}
+            <div class="grid product-grid">
+                {% for shoe in shoes %}
+                    <article class="card">
+                        <a href="{{ url_for('shoe_detail', shoe_id=shoe.id) }}">
+                            <img src="{{ shoe.image_url or 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80' }}" alt="{{ shoe.name }}">
+                        </a>
+                        <div class="card-body">
+                            <div class="meta"><span>{{ shoe.brand }}</span><span>{{ shoe.category }}</span></div>
+                            <h3>{{ shoe.name }}</h3>
+                            <p class="price">${{ '%.2f' | format(shoe.price_cents / 100) }}</p>
+                            <div class="row-actions" style="justify-content:flex-start;">
+                                <a class="btn btn-primary" href="{{ url_for('shoe_detail', shoe_id=shoe.id) }}">Choose options</a>
+                                <form method="post" action="{{ url_for('remove_from_wishlist', shoe_id=shoe.id) }}">
+                                    <button class="danger-btn" type="submit">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="panel" style="padding:1.5rem;">
+                <p>Your wishlist is empty.</p>
+                <a class="btn btn-primary" href="{{ url_for('catalog') }}">Browse shoes</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

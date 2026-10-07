@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}My Account | Court District{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="panel form-shell">
+            <h2>My account</h2>
+            <p class="muted">Role: {{ user.role|title }}</p>
+            <form method="post">
+                <div class="field">
+                    <label for="name">Full name</label>
+                    <input id="name" name="name" type="text" value="{{ user.name }}" required>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" value="{{ user.email }}" required>
+                </div>
+                <button class="btn btn-primary" type="submit">Save changes</button>
+            </form>
+        </div>
+        <section style="margin-top:2rem;">
+            <h2>Order history</h2>
+            {% for order in orders %}
+                <article class="panel" style="padding:1rem; margin-bottom:0.75rem;">
+                    <div class="meta">
+                        <strong>{{ order.shoe_name }} · {{ order.size }} × {{ order.quantity }}</strong>
+                        <span>{{ order.status|title }}</span>
+                    </div>
+                    <p class="muted" style="margin:0;">${{ '%.2f' | format(order.total_cents / 100) }} · {{ order.created_at }} · {{ 'Cash on delivery' if order.payment_method == 'cash_on_delivery' else 'Store pickup' }}</p>
+                </article>
+            {% else %}
+                <p class="muted">You have not placed an order yet.</p>
+            {% endfor %}
+        </section>
+    </div>
+</section>
+{% endblock %}

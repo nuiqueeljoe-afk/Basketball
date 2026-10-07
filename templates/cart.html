@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Cart | Court District{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2>Your cart</h2>
+        {% if items %}
+            <div class="grid" style="gap:1rem;">
+                {% for item in items %}
+                    <article class="panel" style="padding:1rem; display:grid; grid-template-columns:110px 1fr; gap:1rem; align-items:center;">
+                        <img src="{{ item.image_url or 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80' }}" alt="{{ item.name }}" style="width:110px; height:110px; object-fit:cover; border-radius:10px;">
+                        <div>
+                            <div class="meta"><span>{{ item.brand }}</span><span>{{ item.size }}</span></div>
+                            <h3>{{ item.name }}</h3>
+                            <p class="price">${{ '%.2f' | format(item.price_cents / 100) }} each</p>
+                            <div class="row-actions" style="justify-content:flex-start;">
+                                <form method="post" action="{{ url_for('update_cart_item', shoe_id=item.shoe_id) }}" style="display:flex; align-items:end; gap:0.5rem;">
+                                    <input type="hidden" name="size" value="{{ item.size }}">
+                                    <div class="field"><label for="quantity-{{ item.id }}">Qty</label><input id="quantity-{{ item.id }}" name="quantity" type="number" min="1" max="{{ item.stock }}" value="{{ item.quantity }}" required style="width:85px;"></div>
+                                    <button class="secondary-btn" type="submit">Update</button>
+                                </form>
+                                <form method="post" action="{{ url_for('remove_from_cart', shoe_id=item.shoe_id) }}">
+                                    <input type="hidden" name="size" value="{{ item.size }}">
+                                    <button class="danger-btn" type="submit">Remove</button>
+                                </form>
+                            </div>
+                            <p class="muted">Line total: ${{ '%.2f' | format(item.price_cents * item.quantity / 100) }}</p>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+            <div class="panel" style="margin-top:1.25rem; padding:1.25rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+                <p class="price" style="margin:0;">Subtotal: ${{ '%.2f' | format(total_cents / 100) }}</p>
+                <a class="btn btn-primary" href="{{ url_for('checkout') }}">Checkout</a>
+            </div>
+        {% else %}
+            <div class="panel" style="padding:1.5rem;">
+                <p>Your cart is empty.</p>
+                <a class="btn btn-primary" href="{{ url_for('catalog') }}">Browse shoes</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
